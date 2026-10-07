@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buyer Portal - Lead Time Comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+  :root{
+    --page:#efefef; --white:#fff; --ink:#222; --ink2:#5f5f5f; --ink3:#8d8d8d;
+    --line:#d9d9d9; --line2:#e6e6e6; --blue:#2b5fc9; --sel:#e9f1ec; --hover:#f5f5f5;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:Roboto,-apple-system,"Segoe UI",Arial,sans-serif;font-size:13px;color:var(--ink);background:var(--page);-webkit-font-smoothing:antialiased}
+  button{font:inherit;color:inherit;cursor:pointer}
+  button:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+  i.ti{line-height:1}
+
+  .app{display:grid;grid-template-columns:42px 1fr 42px;grid-template-rows:40px 1fr;height:100vh;min-height:520px}
+  .rail{display:flex;flex-direction:column;align-items:center;padding-bottom:10px}
+  .rail i.ti{font-size:20px;color:var(--ink2)}
+  .rail-left{grid-column:1;grid-row:1/3}
+  .rail-right{grid-column:3;grid-row:2}
+  .logo{width:28px;height:28px;margin:6px 0 0;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:14px;letter-spacing:-.6px}
+  .rail-left .icons{display:flex;flex-direction:column;gap:21px;margin-top:20px}
+  .rail-right .icons{display:flex;flex-direction:column;gap:27px;margin-top:20px}
+  .rail .bottom{margin-top:auto}
+
+  .top{grid-column:2/4;grid-row:1;background:var(--white);display:flex;align-items:center;gap:6px;padding:0 5px 0 6px;min-width:0}
+  .back{width:22px;height:28px;border:1px solid var(--line);background:#f5f5f5;display:flex;align-items:center;justify-content:center;padding:0;margin-right:4px}
+  .back i.ti{font-size:16px;color:var(--ink2)}
+  .portal{font-size:17px;font-weight:500;padding:0 14px 0 4px;white-space:nowrap}
+  .tabs{display:flex;height:100%;align-self:stretch}
+  .tabs button{background:none;border:none;border-radius:0;padding:0 21px;font-size:15px;color:var(--ink2);height:100%;white-space:nowrap}
+  .tabs button:hover{background:#f6f6f6}
+  .tabs button[aria-selected="true"]{background:var(--page);color:var(--ink);font-weight:500}
+  .grow{flex:1}
+  .ib{background:none;border:none;padding:6px;display:flex;position:relative;border-radius:2px}
+  .ib:hover{background:var(--hover)}
+  .ib i.ti{font-size:20px;color:var(--ink2)}
+  .ib.hl{border:2px solid #000;padding:4px;margin:0 6px}
+  .ib.hl i.ti{color:#000}
+  .badge{position:absolute;top:-1px;right:-3px;background:#c62828;color:#fff;border-radius:9px;font-size:10px;font-weight:500;line-height:1;padding:3px 5px}
+  .env{display:flex;align-items:center;gap:4px;background:#3a9d48;color:#fff;border-radius:12px;padding:2px 2px 2px 7px;font-size:11px;height:20px;margin:0 6px}
+  .env b{font-weight:400;background:#fff;color:var(--ink);border-radius:50%;width:17px;height:17px;display:flex;align-items:center;justify-content:center;font-size:9.5px;border:1px solid #ccc}
+  .avatar{background:#5b8f6c;color:#fff;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:14px}
+
+  .main{grid-column:2;grid-row:2;display:flex;flex-direction:column;gap:6px;padding:4px 0 6px;min-width:0;min-height:0}
+  .filters{background:var(--white);display:flex;align-items:center;gap:16px;padding:0 12px 0 6px;height:30px;flex:none;font-size:14px;overflow:hidden;white-space:nowrap}
+  .tg{width:20px;height:22px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+  .tg i.ti,.fn i.ti{font-size:17px;color:var(--ink2)}
+  .fn{padding:0 2px 0 8px;display:flex}
+  .f{display:flex;align-items:center;gap:6px}
+  .f .v{background:var(--page);padding:2px 8px;display:flex;gap:10px;height:22px;align-items:center}
+  .f .v em{font-style:normal;color:var(--ink3)}
+  .filters .end{margin-left:auto;display:flex;gap:10px}
+  .filters .end i.ti{font-size:18px;color:var(--ink2)}
+
+  .panel{background:var(--white);flex:1;min-height:0;display:flex;flex-direction:column;padding:4px 7px 7px;min-width:0}
+  .tabrow{display:flex;align-items:center;gap:2px;height:36px;flex:none}
+  .title{font-size:15px;padding:0 10px;height:100%;display:flex;align-items:center;border-bottom:1px solid #333;margin-right:auto;white-space:nowrap}
+  .tb{display:flex;align-items:center;gap:5px;background:none;border:none;padding:6px 8px;font-size:15px;white-space:nowrap}
+  .tb:hover{background:var(--hover)}
+  .tb i.ti{font-size:18px}
+  .tb .chev{font-size:13px;color:var(--ink2)}
+  .tb.pic{padding:6px 5px}
+  .tb.pic i.ti{color:var(--ink2);font-size:17px}
+
+  .infoRow{display:flex;align-items:center;gap:12px;margin:4px 0 6px;font-size:13.5px;flex:none}
+  .info{color:var(--blue);display:flex;align-items:center;gap:5px}
+  .info i.ti{font-size:15px}
+  .verchip{margin-left:auto;color:var(--ink2)}
+  .verchip b{font-weight:500;color:var(--ink)}
+
+  .gridwrap{flex:1;min-height:0;overflow:auto;border:1px solid var(--line);background:var(--white)}
+  .grid{display:flex;flex-direction:column;min-height:100%}
+  .hd{display:grid;grid-template-columns:var(--cols);grid-template-rows:22px 22px;flex:none;border-bottom:1px solid #b9b9b9}
+  .h{padding:0 8px;font-size:14px;border-right:1px solid var(--line2);display:flex;align-items:flex-end;min-height:22px;line-height:21px;white-space:nowrap;overflow:hidden;background:var(--white)}
+  .h.sp{justify-content:space-between}
+  .h.num{justify-content:flex-end;text-align:right}
+  .h.grp{align-items:center;border-bottom:1px solid var(--line2);font-weight:500}
+  .h .ti{font-size:13px;color:var(--ink3)}
+
+  #bd{display:flex;flex-direction:column;flex:1}
+  .row{display:grid;grid-template-columns:var(--cols);height:22px;flex:none}
+  .row.filler{flex:1;height:auto}
+  .row.filler .c{border-bottom:none}
+  .c{border-right:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:0 8px;line-height:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}
+  .c.num{text-align:right;font-variant-numeric:tabular-nums}
+  .c.ic{display:flex;align-items:center;justify-content:center;gap:6px;padding:0}
+  .c.ic .ti{font-size:14px;color:var(--ink2)}
+  .row[data-i]:hover .c{background:var(--hover)}
+  .row.sel .c{background:var(--sel)}
+  .row.sel > .c:first-child{box-shadow:inset 0 0 0 2px #444}
+  .dash{display:inline-block;width:11px;height:2px;background:var(--ink3);vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="rail rail-left" aria-label="Primary">
+    <div class="logo" aria-label="o9">o9</div>
+    <div class="icons">
+      <i class="ti ti-menu-2" aria-hidden="true"></i>
+      <i class="ti ti-layout-grid" aria-hidden="true"></i>
+      <i class="ti ti-device-desktop" aria-hidden="true"></i>
+      <i class="ti ti-user-cog" aria-hidden="true"></i>
+    </div>
+    <i class="ti ti-list-details bottom" aria-hidden="true"></i>
+  </nav>
+
+  <header class="top">
+    <button class="back" aria-label="Back"><i class="ti ti-arrow-left" aria-hidden="true"></i></button>
+    <span class="portal">Buyer Portal</span>
+    <div class="tabs" role="tablist" aria-label="Reports">
+      <button role="tab" aria-selected="false" tabindex="-1">Histogram</button>
+      <button role="tab" aria-selected="false" tabindex="-1">Demonstrated LT</button>
+      <button role="tab" aria-selected="false" tabindex="-1">GR Lead Time</button>
+      <button role="tab" aria-selected="true">Lead Time Comparison</button>
+    </div>
+    <span class="grow"></span>
+    <button class="ib" aria-label="Upload"><i class="ti ti-cloud-upload" aria-hidden="true"></i></button>
+    <button class="ib" aria-label="Download"><i class="ti ti-cloud-download" aria-hidden="true"></i></button>
+    <button class="ib" aria-label="Export to Excel"><i class="ti ti-file-spreadsheet" aria-hidden="true"></i></button>
+    <button class="ib" aria-label="Layouts"><i class="ti ti-layout-list" aria-hidden="true"></i></button>
+    <button class="ib" aria-label="Comments"><i class="ti ti-message-circle" aria-hidden="true"></i></button>
+    <button class="ib" aria-label="Notifications, 16 unread"><i class="ti ti-bell" aria-hidden="true"></i><span class="badge">16</span></button>
+    <button class="ib" aria-label="Refresh"><i class="ti ti-refresh" aria-hidden="true"></i></button>
+    <button class="ib" aria-label="Edit"><i class="ti ti-edit" aria-hidden="true"></i></button>
+    <button class="ib hl" aria-label="Settings"><i class="ti ti-settings" aria-hidden="true"></i></button>
+    <span class="env">Preprod<b>VC</b></span>
+    <span class="avatar" title="Buyer user">SM</span>
+  </header>
+
+  <main class="main">
+    <div class="filters">
+      <span class="tg"><i class="ti ti-layout-sidebar" aria-hidden="true"></i></span>
+      <span class="fn"><i class="ti ti-filter" aria-hidden="true"></i></span>
+      <div class="f"><span>Location</span><span class="v">(All) <em>3</em></span></div>
+      <div class="f"><span>Supplier</span><span class="v">CASIL Semiconductor Ltd</span></div>
+      <div class="f"><span>Version Name</span><span class="v">CurrentWorkingView</span></div>
+      <div class="f"><span>Item</span><span class="v">(All) <em>3</em></span></div>
+      <div class="end">
+        <i class="ti ti-star" aria-hidden="true"></i>
+        <i class="ti ti-share" aria-hidden="true"></i>
+        <i class="ti ti-dots-vertical" aria-hidden="true"></i>
+      </div>
+    </div>
+
+    <section class="panel">
+      <div class="tabrow">
+        <div class="title">Lead Time Comparison</div>
+        <button class="tb"><i class="ti ti-download" aria-hidden="true"></i>Download<i class="ti ti-chevron-down chev" aria-hidden="true"></i></button>
+        <button class="tb"><i class="ti ti-filter" aria-hidden="true"></i>Filters<i class="ti ti-chevron-down chev" aria-hidden="true"></i></button>
+        <button class="tb pic" aria-label="Extensions"><i class="ti ti-puzzle" aria-hidden="true"></i></button>
+        <button class="tb">Layout</button>
+        <button class="tb pic" aria-label="Pin"><i class="ti ti-pin" aria-hidden="true"></i></button>
+        <button class="tb pic" aria-label="Collapse"><i class="ti ti-arrows-minimize" aria-hidden="true"></i></button>
+      </div>
+      <div class="infoRow">
+        <div class="info"><i class="ti ti-info-circle-filled" aria-hidden="true"></i><span id="infoTxt"></span></div>
+        <div class="verchip">Supplier lead time from version <b>V5</b>, saved 06-10-2026 by S. Mehta</div>
+      </div>
+      <div class="gridwrap">
+        <div class="grid" id="grid" role="table" aria-label="Lead time comparison">
+          <div class="hd" id="hd" role="rowgroup"></div>
+          <div id="bd" role="rowgroup"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="rail rail-right" aria-label="Tools">
+    <div class="icons">
+      <i class="ti ti-layout-sidebar-right" aria-hidden="true"></i>
+      <i class="ti ti-settings" aria-hidden="true"></i>
+      <i class="ti ti-circle-dot" aria-hidden="true"></i>
+      <i class="ti ti-help-circle" aria-hidden="true"></i>
+    </div>
+    <i class="ti ti-chevron-right bottom" aria-hidden="true"></i>
+  </nav>
+</div>
+
+<script>
+(function(){
+  var VENDOR='CASIL Semiconductor Ltd';
+  var N=null;
+  /* Supplier stages from version V5: [Raw Material, Manufacturing, Shipment Prep, Transit] */
+  var rows=[
+    {ship:'5100',item:'200-160-001',  st:[14,8,2,3],   sap:14, dem:17.30},
+    {ship:'5100',item:'32308239-001', st:[20,10,2,3],  sap:15, dem:19.00},
+    {ship:'5500',item:'32308239-001', st:[18,12,3,7],  sap:18, dem:24.50},
+    {ship:'5500',item:'50001535-001', st:[7,5,1,4],    sap:12, dem:11.20},
+    {ship:'5515',item:'200-160-001',  st:[30,18,3,7],  sap:21, dem:33.60},
+    {ship:'5515',item:'50001535-001', st:[N,N,N,N],    sap:25, dem:26.80}
+  ];
+  function repl(a){return (a[1]!==N&&a[2]!==N&&a[3]!==N)?a[1]+a[2]+a[3]:N}
+  function cold(a){var r=repl(a);return (r!==N&&a[0]!==N)?r+a[0]:N}
+
+  var selected=0;
+  function $(id){return document.getElementById(id)}
+  var DASH='<span class="dash"></span>';
+  var ACT='<i class="ti ti-dots" aria-hidden="true"></i><i class="ti ti-menu-2" aria-hidden="true"></i>';
+  function fmt(v){return v===N?DASH:v.toFixed(2)}
+
+  var cols=[56,70,190,130,150,165,230,230];
+  var g=$('grid');
+  g.style.setProperty('--cols',cols.map(function(w){return w+'px'}).join(' '));
+  g.style.width=cols.reduce(function(a,b){return a+b},0)+'px';
+
+  $('hd').innerHTML=
+    '<div class="h" style="grid-row:1/span 2;grid-column:1;justify-content:center;padding:0;gap:4px"><i class="ti ti-player-track-prev" aria-hidden="true"></i><i class="ti ti-player-track-next" aria-hidden="true"></i></div>'+
+    '<div class="h" style="grid-row:1/span 2;grid-column:2">Ship To</div>'+
+    '<div class="h sp" style="grid-row:1/span 2;grid-column:3">Vendor<i class="ti ti-arrow-up" aria-hidden="true"></i></div>'+
+    '<div class="h" style="grid-row:1/span 2;grid-column:4">Item</div>'+
+    '<div class="h grp" style="grid-row:1;grid-column:5 / span 2">Supplier Lead Time (Days)</div>'+
+    '<div class="h num" style="grid-row:1/span 2;grid-column:7">SAP Lead Time (PDT) (Days)</div>'+
+    '<div class="h num" style="grid-row:1/span 2;grid-column:8">Demonstrated Lead Time (Days)</div>'+
+    '<div class="h num" style="grid-row:2;grid-column:5" title="Raw Material Procurement + Manufacturing + Shipment Preparation + Transit">Cold Start</div>'+
+    '<div class="h num" style="grid-row:2;grid-column:6" title="Manufacturing + Shipment Preparation + Transit">Replenishment</div>';
+
+  var b='';
+  rows.forEach(function(r,i){
+    b+='<div class="row'+(i===selected?' sel':'')+'" data-i="'+i+'" role="row">'+
+      '<div class="c ic" role="cell">'+ACT+'</div>'+
+      '<div class="c" role="cell">'+r.ship+'</div>'+
+      '<div class="c" role="cell" title="'+VENDOR+'">'+VENDOR+'</div>'+
+      '<div class="c" role="cell">'+r.item+'</div>'+
+      '<div class="c num" role="cell">'+fmt(cold(r.st))+'</div>'+
+      '<div class="c num" role="cell">'+fmt(repl(r.st))+'</div>'+
+      '<div class="c num" role="cell">'+fmt(r.sap)+'</div>'+
+      '<div class="c num" role="cell">'+fmt(r.dem)+'</div>'+
+      '</div>';
+  });
+  var f='<div class="row filler" role="row">';
+  for(var k=0;k<cols.length;k++) f+='<div class="c"></div>';
+  $('bd').innerHTML=b+f+'</div>';
+  $('infoTxt').textContent='Showing '+rows.length+' rows of data.';
+
+  $('bd').addEventListener('click',function(e){
+    var r=e.target.closest('.row[data-i]'); if(!r) return;
+    selected=+r.dataset.i;
+    $('bd').querySelectorAll('.row.sel').forEach(function(x){x.classList.remove('sel')});
+    r.classList.add('sel');
+  });
+})();
+</script>
+</body>
+</html>
